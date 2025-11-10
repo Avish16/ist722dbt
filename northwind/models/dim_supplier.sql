@@ -1,14 +1,17 @@
 {{ config(materialized='table') }}
 
 select
-  {{ dbt_utils.generate_surrogate_key(['supplier_id']) }} as supplier_sk,
-  supplier_id,
-  company_name,
-  contact_name,
-  contact_title,
-  country,
-  city,
-  region,
-  postal_code,
-  phone
-from {{ source('northwind', 'suppliers') }}
+    {{ dbt_utils.generate_surrogate_key(['supplierid']) }} as supplier_sk,
+    supplierid,
+    companyname as supplier_name,
+    contactname,
+    contacttitle,
+    address,
+    city,
+    region,
+    postalcode,
+    country,
+    phone,
+    fax
+from {{ source('northwind','suppliers') }}
+
