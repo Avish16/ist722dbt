@@ -1,28 +1,49 @@
 {{ config(materialized='view') }}
 
 with f as (
-  select * from {{ ref('fact_sales') }}
+    select *
+    from analytics.dbt_avish16_northwind.fact_sales
 ),
 
-p as ( select product_id, product_sk, product_name, supplier_id, category_id
-       from {{ ref('dim_product') }} ),
-s as ( select supplier_id, supplier_sk, company_name as supplier_name
-       from {{ ref('dim_supplier') }} ),
-c as ( select category_id, category_sk, category_name
-       from {{ ref('dim_category') }} ),
-sh as ( select shipper_id, shipper_sk, shipper_name
-        from {{ ref('dim_shipper') }} )
+p as (
+    select 
+        productid,
+        product_name,
+        supplierid,
+        categoryid
+    from analytics.dbt_avish16_northwind.dim_product
+),
 
--- (Optionally join dim_customer / dim_employee / dim_date if you have them.)
+s as (
+    select 
+        supplierid,
+        supplier_name
+    from analytics.dbt_avish16_northwind.dim_supplier
+),
+
+c as (
+    select
+        categoryid,
+        categoryname as category_name
+    from analytics.dbt_avish16_northwind.dim_category
+),
+
+sh as (
+    select
+        shipperid,
+        companyname as shipper_name
+    from analytics.dbt_avish16_northwind.dim_shipper
+)
 
 select
-  f.*,
-  p.product_sk, p.product_name,
-  c.category_sk, c.category_name,
-  s.supplier_sk, s.supplier_name,
-  sh.shipper_sk, sh.shipper_name
+    f.*,
+    p.product_name,
+    c.category_name,
+    s.supplier_name,
+    sh.shipper_name
+
 from f
-left join p  using (product_id)
-left join c  using (category_id)
-left join s  using (supplier_id)
-left join sh using (shipper_id)
+left join p  on f.productid  = p.productid
+left join c  on p.categoryid = c.categoryid
+left join s  on p.supplierid = s.supplierid
+left join sh on f.shipperid  = sh.shipperid

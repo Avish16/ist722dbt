@@ -1,7 +1,17 @@
-with stg_customers as (
-  select * from {{ source('northwind','Customers') }}
-)
+{{ config(materialized='table') }}
+
 select
-  {{ dbt_utils.generate_surrogate_key(['stg_customers.customerid']) }} as customerkey,
-  stg_customers.*
-from stg_customers
+    customerid as customerkey,
+    customerid,
+    companyname,
+    contactname,
+    contacttitle,
+    address,
+    city,
+    region,
+    postalcode,
+    country,
+    phone,
+    fax
+from {{ source('northwind', 'customers') }}
+

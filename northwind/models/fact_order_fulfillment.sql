@@ -1,35 +1,59 @@
-with stg_orders as (
-  select
-    OrderID,
-    {{ dbt_utils.generate_surrogate_key(['employeeid']) }} as employeekey,
-    {{ dbt_utils.generate_surrogate_key(['customerid']) }} as customerkey,
-    replace(to_date(orderdate)::varchar,'-','')::int     as orderdatekey,
-    replace(to_date(shippeddate)::varchar,'-','')::int   as shippeddatekey,
-    replace(to_date(requireddate)::varchar,'-','')::int  as requireddatekey,
-    shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry,
-    freight, shipvia
-  from {{ source('northwind','Orders') }}
-),
-stg_order_details as (
+{{ config(materialized='table') }}
+
+with ord as (
   select
     orderid,
-    sum(quantity)                                   as quantityonorder,
-    sum(quantity * unitprice * (1 - discount))      as totalorderamount
-  from {{ source('northwind','Order_Details') }}
-  group by orderid
+    customerid,
+    employeeid,
+    shipname,
+    shipaddress,
+    shipcity,
+    shipregion,
+    shippostalcode,
+    shipcountry,
+    shipvia,
+    freight,
+    orderdate::date      as orderdate,
+    requireddate::date   as requireddate,
+    shippeddate::date    as shippeddate
+  from {{ source('northwind','orders') }}
 ),
-stg_shippers as (
-  select * from {{ source('northwind','Shippers') }}
+
+calc as (
+  select
+    od.orderid,
+    sum(od.quantity) as quantity,
+    sum(od.unitprice * od.quantity * (1 - od.discount)) as totalorderamount
+  from {{ source('northwind','order_details') }} od
+  group by od.orderid
+),
+
+final as (
+  select
+    o.orderid,
+    o.customerid,
+    o.employeeid,
+    o.shipname,
+    o.shipaddress,
+    o.shipcity,
+    o.shipregion,
+    o.shippostalcode,
+    o.shipcountry,
+    o.shipvia,
+    o.freight,
+    o.orderdate,
+    o.requireddate,
+    o.shippeddate,
+
+    c.quantity,
+    c.totalorderamount,
+
+    datediff('day', o.orderdate, o.shippeddate) as daysfromordertoshipped,
+    datediff('day', o.orderdate, o.requireddate) as daysfromordertorequired,
+    datediff('day', o.requireddate, o.shippeddate) as shippedtorequireddelta,
+    case when o.shippeddate <= o.requireddate then 'Y' else 'N' end as shippedontime
+  from ord o
+  left join calc c on o.orderid = c.orderid
 )
-select
-  o.*,
-  s.companyname as shippercompanyname,
-  od.quantityonorder as quantity,
-  od.totalorderamount,
-  o.shippeddatekey - o.orderdatekey    as daysfromordertoshipped,
-  o.requireddatekey - o.orderdatekey   as daysfromordertorequired,
-  o.shippeddatekey - o.requireddatekey as shippedtorequireddelta,
-  case when o.shippeddatekey - o.requireddatekey <= 0 then 'Y' else 'N' end as shippedontime
-from stg_orders o
-join stg_order_details od on o.orderid = od.orderid
-join stg_shippers s      on s.shipperid = o.shipvia
+
+select * from final

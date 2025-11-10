@@ -2,19 +2,9 @@ version: 2
 
 models:
   - name: fact_sales
-    description: >
-      Sales line-level fact built from orders + order_details with core measures:
-      extended_price, discount_amount, net_sales, plus freight at header level.
     columns:
-      - name: order_id
-        description: Order header natural key (degenerate).
-        data_tests: [not_null]
-      - name: product_id
-        description: Product natural key (degenerate).
-        data_tests: [not_null]
-      - name: quantity
-        description: Ordered quantity
-        data_tests: [not_null]
-      - name: net_sales
-        description: Extended minus discounts
-        data_tests: [not_null]
+      - name: orderid
+        tests: [not_null]
+
+      - name: productid
+        tests: [not_null]

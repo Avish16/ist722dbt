@@ -5,45 +5,63 @@ sources:
     database: raw
     schema: conformed
     tables:
-      - name: DateDimension
+      - name: datedimension
+        identifier: DATEDIMENSION
         columns:
-          - name: DateKey
+          - name: datekey
             tests:
+              - not_null
               - unique
 
   - name: northwind
     database: raw
     schema: northwind
     tables:
-      - name: Customers
+      - name: customers
+        identifier: CUSTOMERS
         columns:
-          - name: CustomerId
-            tests: [unique]
-      - name: Products
+          - name: customerid
+            tests: [not_null, unique]
+
+      - name: products
+        identifier: PRODUCTS
         columns:
-          - name: ProductId
-            tests: [unique]
-      - name: Suppliers
+          - name: productid
+            tests: [not_null, unique]
+
+      - name: suppliers
+        identifier: SUPPLIERS
         columns:
-          - name: SupplierId
-            tests: [unique]
-      - name: Categories
+          - name: supplierid
+            tests: [not_null, unique]
+
+      - name: categories
+        identifier: CATEGORIES
         columns:
-          - name: CategoryId
-            tests: [unique]
-      - name: Employees
+          - name: categoryid
+            tests: [not_null, unique]
+
+      - name: employees
+        identifier: EMPLOYEES
         columns:
-          - name: EmployeeId
-            tests: [unique]
-      - name: Shippers
+          - name: employeeid
+            tests: [not_null, unique]
+
+      - name: shippers
+        identifier: SHIPPERS
         columns:
-          - name: ShipperID
-            tests: [unique]
-      - name: Orders
+          - name: shipperid
+            tests: [not_null, unique]
+
+      - name: orders
+        identifier: ORDERS
         columns:
-          - name: OrderId
-            tests: [unique]
-      - name: Order_Details
+          - name: orderid
+            tests: [not_null, unique]
+
+      - name: order_details
+        identifier: ORDER_DETAILS
         tests:
           - dbt_utils.unique_combination_of_columns:
-              combination_of_columns: [OrderId, ProductId]
+              arguments:
+                combination_of_columns: [orderid, productid]
