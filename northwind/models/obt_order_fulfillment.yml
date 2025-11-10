@@ -1,0 +1,4 @@
+version: 2
+models:
+  - name: obt_order_fulfillment
+    description: Order fulfillment fact joined to all its dimensions (one big table).
