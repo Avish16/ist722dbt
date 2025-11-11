@@ -2,12 +2,23 @@ version: 2
 
 models:
   - name: dim_category
-    description: "Dimension table listing product categories."
-
+    description: "Category dimension table containing product category information."
     columns:
+      - name: categorykey
+        description: "Surrogate key for the category dimension."
+        tests:
+          - not_null
+          - unique
+
       - name: categoryid
-        description: "Unique identifier for a category."
-        tests: [unique, not_null]
+        description: "Business key from the source Northwind categories table."
+        tests:
+          - not_null
 
       - name: categoryname
-        description: "Name of the category."
+        description: "Name of the product category."
+        tests:
+          - not_null
+
+      - name: description
+        description: "Text description of the product category."
