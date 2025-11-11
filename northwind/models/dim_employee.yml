@@ -2,4 +2,12 @@ version: 2
 
 models:
   - name: dim_employee
-    description: "Employee dimension capturing employee identity, job title, reporting structure, and names."
+    description: "Dimension table storing employee details, job titles, and reporting hierarchy."
+
+    columns:
+      - name: employeeid
+        description: "Unique identifier for an employee."
+        tests: [unique, not_null]
+
+      - name: employeenamefirstlast
+        description: "Employee full name in first-last format."

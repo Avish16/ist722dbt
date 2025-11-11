@@ -2,48 +2,13 @@ version: 2
 
 models:
   - name: fact_sales
-    description: "Fact table combining order header and line item information to compute revenue, discounts, and sales metrics."
+    description: "Fact table storing product-level sales transactions."
 
     columns:
       - name: orderid
-        description: "Order identifier linking to customer, employee, and date dimensions."
-        tests:
-          - not_null
+        description: "Identifier for the order associated with this line item."
+        tests: [not_null]
 
       - name: productid
-        description: "Product identifier linking to the product dimension."
-        tests:
-          - not_null
-
-      - name: customerid
-        description: "Customer placing the order."
-
-      - name: employeeid
-        description: "Employee who processed the order."
-
-      - name: orderdate
-        description: "Date the order was created."
-
-      - name: requireddate
-        description: "Date by which the customer expected the product."
-
-      - name: shippeddate
-        description: "Actual date when the order was shipped."
-
-      - name: shipperid
-        description: "Identifier for the shipping provider."
-
-      - name: freight
-        description: "Shipping cost (freight charges) applied to this order."
-
-      - name: unitprice
-        description: "Price of a single unit for the product in this line."
-
-      - name: quantity
-        description: "Total quantity of the product ordered."
-
-      - name: discount
-        description: "Discount percentage applied to this item."
-
-      - name: extendedprice
-        description: "Net sales amount after discount (unitprice * quantity * (1-discount))."
+        description: "Identifier for the product in the order."
+        tests: [not_null]

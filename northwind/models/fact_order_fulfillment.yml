@@ -2,30 +2,17 @@ version: 2
 
 models:
   - name: fact_order_fulfillment
-    description: "Fact table measuring operational order fulfillment metrics such as shipping speed, time-to-required-date, and whether shipments were on-time."
+    description: "Order-level fact table used to analyze fulfillment speed, delays, and shipping performance."
+
     columns:
       - name: orderid
-        description: "Order identifier linking fulfillment data to sales and customers."
-      - name: customerid
-        description: "Customer placing the order."
-      - name: employeeid
-        description: "Employee handling the order."
-      - name: orderdate
-        description: "Original order date."
-      - name: requireddate
-        description: "Date by which the customer expected the items."
-      - name: shippeddate
-        description: "Actual shipment date."
-      - name: quantity
-        description: "Quantity of items in the order."
-      - name: totalorderamount
-        description: "Total monetary value of the full order."
-      - name: daysfromordertoshipped
-        description: "Number of days between order date and shipment date."
-      - name: daysfromordertorequired
-        description: "Number of days between order date and required date."
-      - name: shippedtorequireddelta
-        description: "Difference between shipped date and required date."
-      - name: shippedontime
-        description: "Boolean flag indicating if shipment happened on or before required date."
+        description: "Unique identifier for an order."
+        tests: [not_null]
 
+      - name: customerid
+        description: "Identifier for the customer who placed the order."
+        tests: [not_null]
+
+      - name: employeeid
+        description: "Identifier for the employee who processed the order."
+        tests: [not_null]

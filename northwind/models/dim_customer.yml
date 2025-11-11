@@ -2,4 +2,12 @@ version: 2
 
 models:
   - name: dim_customer
-    description: "Customer dimension table containing company, contact, and geographical attributes."
+    description: "Dimension table containing customer profile and contact information."
+
+    columns:
+      - name: customerid
+        description: "Natural key representing a unique customer."
+        tests: [unique, not_null]
+
+      - name: companyname
+        description: "Customer's company name."

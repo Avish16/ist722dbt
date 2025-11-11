@@ -2,23 +2,5 @@ version: 2
 
 models:
   - name: obt_order_fulfillment
-    description: "Combined fulfillment table used for operational reporting, enriched with customer, employee, and date dimension attributes."
-    columns:
-      - name: orderid
-        description: "Identifier of the processed order."
-      - name: customer_company
-        description: "Customer company placing the order."
-      - name: contactname
-        description: "Primary contact person for the customer."
-      - name: customer_city
-        description: "City where the customer is located."
-      - name: customer_country
-        description: "Country where the customer is located."
-      - name: employeenamefirstlast
-        description: "Full name of the employee handling the order."
-      - name: employeetitle
-        description: "Job title of the employee."
-      - name: order_date
-        description: "Order date mapped from the date dimension."
-      - name: shippedontime
-        description: "Boolean indicator of shipment timeliness."
+    description: "One-Big-Table that enriches order fulfillment facts with customer, employee, and date details."
+
