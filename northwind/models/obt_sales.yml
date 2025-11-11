@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: obt_sales
+    description: "Unified sales view enriched with product, category, supplier, and shipper attributes to support reporting and analytics."
+    columns:
+      - name: orderid
+        description: "Order reference from fact_sales."
+      - name: productid
+        description: "Product reference for the sales line."
+      - name: product_name
+        description: "Descriptive name of the product."
+      - name: category_name
+        description: "Category grouping of the product."
+      - name: supplier_name
+        description: "Supplier company providing the product."
+      - name: shipper_name
+        description: "Shipping company handling the order delivery."
