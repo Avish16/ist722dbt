@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: dim_product
+    description: "Dimension table containing product details, category, and supplier relationships."
+
+    columns:
+      - name: productid
+        description: "Unique product identifier."
+        tests: [unique, not_null]
+
+      - name: productname
+        description: "Name of the product."

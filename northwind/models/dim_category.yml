@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: dim_category
+    description: "Dimension table listing product categories."
+
+    columns:
+      - name: categoryid
+        description: "Unique identifier for a category."
+        tests: [unique, not_null]
+
+      - name: categoryname
+        description: "Name of the category."

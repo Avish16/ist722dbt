@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: dim_shipper
+    description: "Dimension table containing shipping company details."
+
+    columns:
+      - name: shipperid
+        description: "Unique identifier for a shipper."
+        tests: [unique, not_null]
+
+      - name: shippername
+        description: "Name of the shipping company."

@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: dim_supplier
+    description: "Dimension table storing supplier company information."
+
+    columns:
+      - name: supplierid
+        description: "Unique identifier for a supplier."
+        tests: [unique, not_null]
+
+      - name: companyname
+        description: "Name of the supplier company."
